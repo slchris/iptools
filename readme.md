@@ -16,12 +16,19 @@
 ### 命令行查询
 
 ```bash
-# 获取当前IP地址
-curl https://your-domain.com
+# 获取当前IP地址（推荐，直接使用 HTTPS）
+curl https://ip.plz.ac
+
+# 或者跟随重定向（如果你敲的是不带协议的域名）
+curl -L ip.plz.ac
 
 # 获取详细JSON信息
-curl https://your-domain.com/api/ip
+curl https://ip.plz.ac/api/ip
 ```
+
+> 说明：Cloudflare 的「始终使用 HTTPS (Always Use HTTPS)」会在请求到达 Worker 之前将 `http://ip.plz.ac` 重定向到 `https://ip.plz.ac`，这属于边缘层行为，Worker 无法拦截。因此直接使用 `curl ip.plz.ac`（默认是 HTTP）会只看到 301 重定向而没有正文。解决方式是：
+> - 直接用 HTTPS：`curl https://ip.plz.ac`
+> - 或者让 curl 跟随重定向：`curl -L ip.plz.ac`
 
 ### Web界面
 

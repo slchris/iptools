@@ -256,12 +256,19 @@ function getWebPage(ip, locationInfo) {
             <div class="usage-title">命令行使用方法</div>
             <div class="code-block">curl ${new URL(globalThis.location || 'https://ip.plz.ac').origin}</div>
             <button class="copy-btn" onclick="copyToClipboard('curl ${new URL(globalThis.location || 'https://ip.plz.ac').origin}')">复制命令</button>
+
+            <div class="code-block">curl -L ${new URL(globalThis.location || 'https://ip.plz.ac').host}</div>
+            <button class="copy-btn" onclick="copyToClipboard('curl -L ${new URL(globalThis.location || 'https://ip.plz.ac').host}')">复制命令</button>
             
             <div style="margin-top: 1rem;">
                 <div class="usage-title">API接口</div>
                 <div class="code-block">curl ${new URL(globalThis.location || 'https://ip.plz.ac').origin}/api/ip</div>
                 <button class="copy-btn" onclick="copyToClipboard('curl ${new URL(globalThis.location || 'https://ip.plz.ac').origin}/api/ip')">复制命令</button>
             </div>
+
+            <p style="color:#6c757d; margin-top:1rem; font-size:0.9rem; text-align:left;">
+                提示：Cloudflare 会将 <code>http://</code> 自动重定向到 <code>https://</code>，命令行中如果直接输入不带协议的域名可以使用 <code>-L</code> 让 curl 跟随重定向。
+            </p>
         </div>
     </div>
 
