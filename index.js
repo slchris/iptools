@@ -4,6 +4,13 @@
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
+    
+    // 强制HTTPS重定向
+    if (url.protocol === 'http:') {
+      const httpsUrl = url.toString().replace('http:', 'https:');
+      return Response.redirect(httpsUrl, 301);
+    }
+    
     const clientIP = request.headers.get('CF-Connecting-IP') || 
                      request.headers.get('X-Forwarded-For') || 
                      request.headers.get('X-Real-IP') || 
