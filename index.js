@@ -4,13 +4,6 @@
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
-    
-    // 强制HTTPS重定向
-    if (url.protocol === 'http:') {
-      const httpsUrl = url.toString().replace('http:', 'https:');
-      return Response.redirect(httpsUrl, 301);
-    }
-    
     const clientIP = request.headers.get('CF-Connecting-IP') || 
                      request.headers.get('X-Forwarded-For') || 
                      request.headers.get('X-Real-IP') || 
@@ -22,6 +15,13 @@ export default {
                    userAgent.includes('wget') || 
                    userAgent.includes('HTTPie') ||
                    request.headers.get('Accept')?.includes('text/plain');
+    
+    // 对于curl等命令行工具，即使是HTTP请求也直接返回IP（为了用户体验）
+    // 对于浏览器访问，强制重定向到HTTPS
+    if (url.protocol === 'http:' && !isCurl) {
+      const httpsUrl = url.toString().replace('http:', 'https:');
+      return Response.redirect(httpsUrl, 301);
+    }
 
     // 获取IP地理位置信息（使用Cloudflare的CF对象，如果可用）
     const getLocationInfo = () => {
