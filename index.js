@@ -247,13 +247,13 @@ function getWebPage(ip, locationInfo) {
         
         <div class="usage-section">
             <div class="usage-title">命令行使用方法</div>
-            <div class="code-block">curl ${new URL(globalThis.location || 'https://yoursite.com').origin}</div>
-            <button class="copy-btn" onclick="copyToClipboard('curl ${new URL(globalThis.location || 'https://yoursite.com').origin}')">复制命令</button>
+            <div class="code-block">curl ${new URL(globalThis.location || 'https://ip.plz.ac').origin}</div>
+            <button class="copy-btn" onclick="copyToClipboard('curl ${new URL(globalThis.location || 'https://ip.plz.ac').origin}')">复制命令</button>
             
             <div style="margin-top: 1rem;">
                 <div class="usage-title">API接口</div>
-                <div class="code-block">curl ${new URL(globalThis.location || 'https://yoursite.com').origin}/api/ip</div>
-                <button class="copy-btn" onclick="copyToClipboard('curl ${new URL(globalThis.location || 'https://yoursite.com').origin}/api/ip')">复制命令</button>
+                <div class="code-block">curl ${new URL(globalThis.location || 'https://ip.plz.ac').origin}/api/ip</div>
+                <button class="copy-btn" onclick="copyToClipboard('curl ${new URL(globalThis.location || 'https://ip.plz.ac').origin}/api/ip')">复制命令</button>
             </div>
         </div>
     </div>
