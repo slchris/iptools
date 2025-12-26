@@ -115,8 +115,10 @@ function getWebPage(ip, locationInfo, gaId = '') {
             color: #333;
         }
         .container {
-            max-width: 640px;
+            max-width: 800px;
+            width: 100%;
             margin: 0 auto;
+            padding: 0 0.5rem;
         }
         h1 {
             font-size: 1.5rem;
@@ -139,16 +141,19 @@ function getWebPage(ip, locationInfo, gaId = '') {
             margin-bottom: 0.75rem;
         }
         .ip {
-            font-size: clamp(1.1rem, 4vw, 1.75rem);
+            font-size: clamp(1.1rem, 3vw, 1.5rem);
             font-weight: 600;
             font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
             color: #111;
-            word-break: break-all;
+            word-break: keep-all;
+            overflow-wrap: normal;
+            white-space: nowrap;
             cursor: pointer;
             padding: 0.5rem;
             margin: -0.5rem;
             border-radius: 4px;
             transition: background 0.2s;
+            overflow-x: auto;
         }
         .ip:hover { background: #f5f5f5; }
         .info-grid {
@@ -249,6 +254,50 @@ function getWebPage(ip, locationInfo, gaId = '') {
             pointer-events: none;
         }
         .toast.show { opacity: 1; }
+        
+        /* 响应式设计 */
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem 0.75rem;
+            }
+            .card {
+                padding: 1rem;
+            }
+            .ip {
+                font-size: 0.95rem;
+                padding: 0.5rem 0;
+                margin: 0;
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .info-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+            }
+            .code-block {
+                padding: 0.75rem;
+                font-size: 0.75rem;
+            }
+            h1 {
+                font-size: 1.25rem;
+            }
+        }
+        
+        @media (min-width: 481px) and (max-width: 768px) {
+            .container {
+                max-width: 95%;
+            }
+            .ip {
+                font-size: 1.1rem;
+            }
+        }
+        
+        @media (min-width: 769px) {
+            .container {
+                max-width: 800px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -262,7 +311,7 @@ function getWebPage(ip, locationInfo, gaId = '') {
             ${location || isp || asn || timezone ? `
             <div class="info-grid">
                 ${location ? `<div class="info-item"><div class="info-label">位置</div><div class="info-value">${location}</div></div>` : ''}
-                ${isp ? `<div class="info-item"><div class="info-label">运营商</div><div class="info-value">${isp}</div></div>` : ''}
+                ${isp ? `<div class="info-item"><div class="info-label">组织</div><div class="info-value">${isp}</div></div>` : ''}
                 ${asn ? `<div class="info-item"><div class="info-label">ASN</div><div class="info-value">${asn}</div></div>` : ''}
                 ${timezone ? `<div class="info-item"><div class="info-label">时区</div><div class="info-value">${timezone}</div></div>` : ''}
             </div>
