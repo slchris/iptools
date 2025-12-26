@@ -105,10 +105,6 @@ function getWebPage(ip, locationInfo, gaId = '') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IP Tools - IP地址查询</title>${gaScript}
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-QTBEQJXDQH');
-    </script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
