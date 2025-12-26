@@ -51,7 +51,7 @@ export default {
         ...locationInfo
       };
       
-      return new Response(JSON.stringify(response, null, 2), {
+      return new Response(JSON.stringify(response, null, 2) + '\n', {
         headers: {
           'Content-Type': 'application/json',
           'Access-Control-Allow-Origin': '*',
