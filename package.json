@@ -3,14 +3,28 @@
   "version": "1.0.0",
   "description": "IP查询工具，支持Web页面和curl查询，部署到Cloudflare Workers",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "dev": "wrangler dev",
-    "deploy": "wrangler deploy"
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "lint": "eslint index.js",
+    "lint:fix": "eslint index.js --fix"
   },
-  "keywords": ["ip", "query", "cloudflare", "workers"],
+  "keywords": [
+    "ip",
+    "query",
+    "cloudflare",
+    "workers"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
-    "wrangler": "^3.0.0"
+    "@vitest/coverage-v8": "^4.0.16",
+    "eslint": "^9.39.2",
+    "vitest": "^4.0.16",
+    "wrangler": "^4.54.0"
   }
 }

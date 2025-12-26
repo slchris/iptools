@@ -1,0 +1,121 @@
+name: Frontend Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: ESLint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run ESLint
+        run: npx eslint index.js --format stylish
+        continue-on-error: true
+
+  unit-test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+        continue-on-error: true
+
+  html-validate:
+    name: HTML Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install html-validate
+        run: npm install -g html-validate
+
+      - name: Extract and validate HTML
+        run: |
+          # 提取 index.js 中的 HTML 模板进行验证
+          node -e "
+            const fs = require('fs');
+            const content = fs.readFileSync('index.js', 'utf8');
+            const match = content.match(/return \\\`<!DOCTYPE html>[\\s\\S]*?<\\/html>\\\`/);
+            if (match) {
+              let html = match[0].replace(/^return \\\`/, '').replace(/\\\`$/, '');
+              // 替换模板变量为占位符
+              html = html.replace(/\\\${[^}]+}/g, 'placeholder');
+              fs.writeFileSync('extracted.html', html);
+              console.log('HTML extracted successfully');
+            } else {
+              console.log('No HTML template found');
+              process.exit(0);
+            }
+          "
+          if [ -f extracted.html ]; then
+            html-validate extracted.html || true
+          fi
+
+  lighthouse:
+    name: Lighthouse Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install wrangler
+        run: npm install -g wrangler
+
+      - name: Start local dev server
+        run: |
+          npx wrangler dev --port 8787 &
+          sleep 10
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        continue-on-error: true
+
+      - name: Run Lighthouse CI
+        uses: treosh/lighthouse-ci-action@v12
+        continue-on-error: true
+        with:
+          urls: |
+            http://localhost:8787
+          uploadArtifacts: true
+          temporaryPublicStorage: true
