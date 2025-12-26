@@ -62,6 +62,21 @@ routes = [
 ]
 ```
 
+### 环境变量
+
+| 变量 | 说明 | 必填 |
+|------|------|------|
+| `GA_ID` | Google Analytics ID | 否 |
+
+在 `wrangler.toml` 中配置：
+
+```toml
+[vars]
+GA_ID = "G-XXXXXXXXXX"
+```
+
+或通过 Cloudflare Dashboard 设置。
+
 ## API
 
 ### GET /

@@ -71,7 +71,8 @@ export default {
     }
 
     // 默认返回Web页面
-    const html = getWebPage(clientIP, getLocationInfo());
+    const gaId = env.GA_ID || '';
+    const html = getWebPage(clientIP, getLocationInfo(), gaId);
     return new Response(html, {
       headers: {
         'Content-Type': 'text/html; charset=utf-8',
@@ -82,22 +83,28 @@ export default {
 };
 
 // 生成Web页面HTML
-function getWebPage(ip, locationInfo) {
+function getWebPage(ip, locationInfo, gaId = '') {
   const location = [locationInfo.city, locationInfo.region, locationInfo.country].filter(Boolean).join(', ');
   const isp = locationInfo.asOrganization || '';
   const asn = locationInfo.asn ? `AS${locationInfo.asn}` : '';
   const timezone = locationInfo.timezone || '';
+  
+  // Google Analytics 代码（仅在配置了 GA_ID 时启用）
+  const gaScript = gaId ? `
+    <script async src="https://www.googletagmanager.com/gtag/js?id=${gaId}"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', '${gaId}');
+    </script>` : '';
   
   return `<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IP Tools - IP地址查询</title>
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-QTBEQJXDQH"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
+    <title>IP Tools - IP地址查询</title>${gaScript}
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', 'G-QTBEQJXDQH');
