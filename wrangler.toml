@@ -2,9 +2,9 @@ name = "iptools"
 main = "index.js"
 compatibility_date = "2024-10-24"
 
-# 环境变量配置（可选）
-# [vars]
-# GA_ID = "G-XXXXXXXXXX"  # Google Analytics ID
+# 环境变量配置
+[vars]
+GA_ID = "G-QTBEQJXDQH"
 
 [env.production]
 routes = [
